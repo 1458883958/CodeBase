@@ -17,6 +17,8 @@ import java.util.TimeZone;
  * 创建时间： 2019/1/4 9:06
  * 描述：    时间工具类
  */
+
+@SuppressWarnings("unused")
 public class DateUtil {
     /**
      * 时间转时间戳
@@ -72,7 +74,7 @@ public class DateUtil {
      * 时间戳转Date
      *
      * @param str str 时间
-     * @return
+     * @return Date
      */
     public static Date stringToMDate(String str) {
         @SuppressLint("SimpleDateFormat")
@@ -149,9 +151,9 @@ public class DateUtil {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         date = new Date();
-        date.setTime(lt*1000L);
+        date.setTime(lt * 1000L);
         res = simpleDateFormat.format(date);
-        LogUtil.e("res:"+res+" lt:"+lt);
+        LogUtil.e("res:" + res + " lt:" + lt);
         return res;
     }
 
@@ -163,8 +165,8 @@ public class DateUtil {
         Date date;
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
-        if (String.valueOf(lt).length()==10)
-            date = new Date(lt*1000L);
+        if (String.valueOf(lt).length() == 10)
+            date = new Date(lt * 1000L);
         else
             date = new Date(lt);
         res = simpleDateFormat.format(date);
@@ -279,6 +281,17 @@ public class DateUtil {
     }
 
     /**
+     * 获取当前分钟
+     *
+     * @return
+     */
+    public static int getM() {
+        final Calendar c = Calendar.getInstance();
+        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        return c.get(Calendar.MINUTE);
+    }
+
+    /**
      * 获取当前日
      *
      * @return
@@ -369,6 +382,30 @@ public class DateUtil {
             }
         }
         return cycleBuilder.toString();
+    }
+
+
+    /**
+     * 判断是否在某个时间段内
+     *
+     * @return boolean
+     */
+    public static boolean whetherTime() {
+        // 为了您的账户安全，请在9:00-21:30使用收该功能
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Date current;
+        Date start;
+        Date end;
+        try {
+            current = sdf.parse(sdf.format(new Date()));
+            start = sdf.parse("9:00");
+            end = sdf.parse("21:30");
+            return current.after(start) && current.before(end);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
